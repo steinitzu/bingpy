@@ -31,7 +31,6 @@ class Bing(object):
         otherwise it will stored in the system's temp directory.
         given cache_dir must exist, otherwise an OSException will be raised.
         """
-        print kwargs
         self.api_key = api_key
         self.caching = caching
         if caching and cache_dir:
@@ -69,6 +68,10 @@ class Bing(object):
         """
         json = self.get_json(query)
         return JSONDecoder().decode(json)['d']['results'][0]['Web']
+
+    
+    def __getitem__(self, query):
+        return self.get_results(query)
 
 
 
