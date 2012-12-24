@@ -58,9 +58,12 @@ class Bing(object):
         url = self.search_url % {'query' : quote(query.encode('utf-8'))}
         bsixfour = base64.encodestring(
             '%s:%s' % (self.api_key, self.api_key)
-            ).replace('\n', '')        
-        headers = {'Authorization' : 'Basic %s' % bsixfour}
-        return self.http.request(url, headers=headers)[1]
+            ).replace('\n', '')                
+        #TODO: cache control header should be configable
+        headers = {'Authorization' : 'Basic %s' % bsixfour,
+                   'cache-control' : 'max-age=604800'}
+        resp = self.http.request(url, headers=headers)
+        return resp[1]
 
     def get_results(self, query):
         """
