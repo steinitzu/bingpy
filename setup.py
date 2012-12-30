@@ -4,11 +4,15 @@
 from distutils.core import setup
 
 setup(name='bingpy',
-      version='0.1',
+      version='0.2',
       description='A simple python wrapper to the bing web search api.',
       author='Steinþór Pálsson',
       author_email='steinitzu@gmail.com',
       url='https://github.com/steinitzu/bingpy',
       license='beerware',
-      py_modules = ['bing']
+      py_modules = ['bing'],
+
+      install_requires=[
+        'httplib2'
+        ]
      )
