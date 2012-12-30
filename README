@@ -1,7 +1,7 @@
 bingpy
 ======
 
-A python interface to the Bing search api
+A simple python interface to the Bing web search api.
 
 
 Installation

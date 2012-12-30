@@ -22,7 +22,7 @@ class Bing(object):
 
     search_url = 'https://api.datamarket.azure.com/Bing/Search/v1/Composite?Sources=%%27web%%27&Query=%%27%(query)s%%27&$format=json'
 
-    def __init__(self, api_key=None, caching=True, cache_dir=None, **kwargs):
+    def __init__(self, api_key=None, caching=True, cache_dir=None, headers={}):
         """
         Bing(api_key=None, caching=True, cache_dir=None)
         Make a new instance of the Bing api with given api_key
@@ -30,6 +30,10 @@ class Bing(object):
         If cache_dir is provided as well, it will be used to store the cache, 
         otherwise it will stored in the system's temp directory.
         given cache_dir must exist, otherwise an OSException will be raised.
+
+        Additionally you can pass http request headers in headers dict in
+        the form of 'header':'value' (e.g. 'cache-control':'max-age=9000').
+        These headers will be passed for every bing request.
         """
         self.api_key = api_key
         self.caching = caching
@@ -44,7 +48,8 @@ class Bing(object):
             self.cache_dir = _get_cache_dir()
         else:
             self.cache_dir = None
-
+        
+        self.headers = headers
         self.http = self.get_http()
 
     def get_http(self):
@@ -60,8 +65,8 @@ class Bing(object):
             '%s:%s' % (self.api_key, self.api_key)
             ).replace('\n', '')                
         #TODO: cache control header should be configable
-        headers = {'Authorization' : 'Basic %s' % bsixfour,
-                   'cache-control' : 'max-age=604800'}
+        headers = {'Authorization' : 'Basic %s' % bsixfour}
+        headers.update(self.headers)
         resp = self.http.request(url, headers=headers)
         return resp[1]
 
